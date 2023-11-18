@@ -72,29 +72,7 @@
 			<div class="card">
 				<div class="card-body">
 					<div id="carouselExample" class="carousel slide">
-						<div class="carousel-inner">
-							<div class="carousel-item active">
-								<img
-									src="https://cdn-image.bayupriyambada.repl.co/img/slide1.png"
-									class="d-block w-100 rounded shadow"
-									alt="Carousel Image 1"
-								/>
-							</div>
-							<div class="carousel-item">
-								<img
-									src="https://cdn-image.bayupriyambada.repl.co/img/slide2.png"
-									class="d-block w-100 rounded shadow"
-									alt="Carousel Image 2"
-								/>
-							</div>
-							<div class="carousel-item">
-								<img
-									src="https://dummyimage.com/1200x350/3498db/ffffff&text=Carousel+Image+1"
-									class="d-block w-100 rounded shadow"
-									alt="Carousel Image 3"
-								/>
-							</div>
-						</div>
+						<div class="carousel-inner" id="carousel"></div>
 						<button
 							class="carousel-control-prev"
 							type="button"
@@ -177,39 +155,17 @@
 										aria-label="Default select example"
 										id="shopSelect"
 									>
-										<!-- <option selected>Pilihan Toko</option>
-										<option value="1">One</option>
-										<option value="2">Two</option>
-										<option value="3">Three</option> -->
 									</select>
 								</div>
 								<div class="col-12">
-									<div class="input-group">
-										<span class="input-group-text" id="basic-addon3"
-											>Min Harga</span
-										>
-										<input
-											type="text"
-											class="form-control"
-											id="rupiah"
-											oninput="formatRp(this)"
-											aria-describedby="basic-addon3 basic-addon4"
-										/>
-									</div>
+									<label for="minPrice">Min Price:</label>
+									<select id="minPrice" class="form-control">
+									</select>
 								</div>
 								<div class="col-12">
-									<div class="input-group">
-										<span class="input-group-text" id="basic-addon3"
-											>Maks Harga</span
-										>
-										<input
-											type="text"
-											class="form-control"
-											id="rupiah"
-											oninput="formatRp(this)"
-											aria-describedby="basic-addon3 basic-addon4"
-										/>
-									</div>
+									<label for="maxPrice">Max Price:</label>
+									<select id="maxPrice" class="form-control">
+									</select>
 								</div>
 								<div class="col-12">
 									<div class="d-grid">
@@ -228,172 +184,18 @@
 					</div>
 					<div class="card mt-2">
 						<div class="card-body">
-							<div class="row g-2">
-								<div class="col-sm-3 col-md-4 col-12">
-									<div class="card">
-										<img
-											src="https://cdn-image.bayupriyambada.repl.co/img/prod/1.png"
-											class="card-img-top"
-											heigth="250"
-											alt="Gambar 1"
-										/>
-										<div class="card-body">
-											<h5 class="card-title">Title Ecommerce</h5>
-											<p class="card-text">
-												Some quick example text to build on the card
-											</p>
-										</div>
-										<ul class="list-group list-group-flush">
-											<li class="list-group-item">Kategori Dummy</li>
-											<li class="list-group-item">Rp. 50.000</li>
-											<li class="list-group-item">Shop Name</li>
-										</ul>
-										<div class="card-body">
-											<a href="#" class="d-block btn btn-dark"
-												>Tambah Keranjang</a
-											>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3 col-md-4 col-12">
-									<div class="card">
-										<img
-											src="https://cdn-image.bayupriyambada.repl.co/img/prod/2.png"
-											class="card-img-top"
-											heigth="250"
-											alt="Gambar 1"
-										/>
-										<div class="card-body">
-											<h5 class="card-title">Title Ecommerce</h5>
-											<p class="card-text">
-												Some quick example text to build on the card
-											</p>
-										</div>
-										<ul class="list-group list-group-flush">
-											<li class="list-group-item">Kategori Dummy</li>
-											<li class="list-group-item">Rp. 50.000</li>
-											<li class="list-group-item">Shop Name</li>
-										</ul>
-										<div class="card-body">
-											<a href="#" class="d-block btn btn-dark"
-												>Tambah Keranjang</a
-											>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3 col-md-4 col-12">
-									<div class="card">
-										<img
-											src="https://cdn-image.bayupriyambada.repl.co/img/prod/3.png"
-											class="card-img-top"
-											heigth="250"
-											alt="Gambar 1"
-										/>
-										<div class="card-body">
-											<h5 class="card-title">Title Ecommerce</h5>
-											<p class="card-text">
-												Some quick example text to build on the card
-											</p>
-										</div>
-										<ul class="list-group list-group-flush">
-											<li class="list-group-item">Kategori Dummy</li>
-											<li class="list-group-item">Rp. 50.000</li>
-											<li class="list-group-item">Shop Name</li>
-										</ul>
-										<div class="card-body">
-											<a href="#" class="d-block btn btn-dark"
-												>Tambah Keranjang</a
-											>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3 col-md-4 col-12">
-									<div class="card">
-										<img
-											src="https://cdn-image.bayupriyambada.repl.co/img/prod/1.png"
-											class="card-img-top"
-											heigth="250"
-											alt="Gambar 1"
-										/>
-										<div class="card-body">
-											<h5 class="card-title">Title Ecommerce</h5>
-											<p class="card-text">
-												Some quick example text to build on the card
-											</p>
-										</div>
-										<ul class="list-group list-group-flush">
-											<li class="list-group-item">Kategori Dummy</li>
-											<li class="list-group-item">Rp. 50.000</li>
-											<li class="list-group-item">Shop Name</li>
-										</ul>
-										<div class="card-body">
-											<a href="#" class="d-block btn btn-dark"
-												>Tambah Keranjang</a
-											>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3 col-md-4 col-12">
-									<div class="card">
-										<img
-											src="https://cdn-image.bayupriyambada.repl.co/img/prod/2.png"
-											class="card-img-top"
-											heigth="250"
-											alt="Gambar 1"
-										/>
-										<div class="card-body">
-											<h5 class="card-title">Title Ecommerce</h5>
-											<p class="card-text">
-												Some quick example text to build on the card
-											</p>
-										</div>
-										<ul class="list-group list-group-flush">
-											<li class="list-group-item">Kategori Dummy</li>
-											<li class="list-group-item">Rp. 50.000</li>
-											<li class="list-group-item">Shop Name</li>
-										</ul>
-										<div class="card-body">
-											<a href="#" class="d-block btn btn-dark"
-												>Tambah Keranjang</a
-											>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3 col-md-4 col-12">
-									<div class="card">
-										<img
-											src="https://cdn-image.bayupriyambada.repl.co/img/prod/3.png"
-											class="card-img-top"
-											heigth="250"
-											alt="Gambar 1"
-										/>
-										<div class="card-body">
-											<h5 class="card-title">Title Ecommerce</h5>
-											<p class="card-text">
-												Some quick example text to build on the card
-											</p>
-										</div>
-										<ul class="list-group list-group-flush">
-											<li class="list-group-item">Kategori Dummy</li>
-											<li class="list-group-item">Rp. 50.000</li>
-											<li class="list-group-item">Shop Name</li>
-										</ul>
-										<div class="card-body">
-											<a href="#" class="d-block btn btn-dark"
-												>Tambah Keranjang</a
-											>
-										</div>
-									</div>
-								</div>
+							<div class="row g-2" id="productsList">
 							</div>
+							<button class="btn btn-dark text-center mt-4" id="loadMore">Tampilkan Semua</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 		<script type="module" src="assets/js/query/script.js"></script>
 		<script type="module" src="assets/js/query/helper.js"></script>
+		<script type="module" src="assets/js/helper/listPriceSelect.js"></script>
 	</body>
 </html>
