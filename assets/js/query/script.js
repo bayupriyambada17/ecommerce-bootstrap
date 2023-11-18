@@ -3,6 +3,7 @@ import { urlApi } from './helper.js'
 import { getAllCarousel } from './carousel.js'
 import { getCardProduct } from '../helper/cardProduct.js';
 import { getCategoryProd } from '../helper/cardCategory.js';
+import { listShopName } from '../helper/listShopName.js';
 const count = document.getElementById('count');
 const categorySelect = document.getElementById('categorySelect')
 const shopSelect = document.getElementById('shopSelect');
@@ -83,8 +84,6 @@ async function getProducts() {
 
 }
 
-
-
 async function getCategory() {
   const { products } = await fetchData();
 
@@ -96,7 +95,7 @@ async function getCategory() {
     categorySelect.innerHTML = uniqueCategories.map((category) => {
       return getCategoryProd(category)
 
-    }).join('');
+    }).join('') || null;
   }
 
 }
@@ -107,16 +106,8 @@ async function getShopName() {
   if (products) {
     const uniqueShopName = [...new Set(products.map(s => s.shop.name))];
     uniqueShopName.unshift('Pilihan Toko');
-    shopSelect.innerHTML = uniqueShopName.map((shop) => getShopNameProd(shop)).join('');;
+    shopSelect.innerHTML = uniqueShopName.map((shop) => listShopName(shop)).join('');
   }
-}
-
-const getShopNameProd = (shopName) => {
-  const lowercaseKey = shopName.toLowerCase().replace(/ /g, '-');
-
-  return `
-  <option value="${lowercaseKey}">${shopName}</option>
-  `
 }
 
 async function init() {

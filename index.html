@@ -6,6 +6,10 @@
 		<title>Nitipin Toko - Belanja dengan harga termurah!.</title>
 		<link rel="stylesheet" href="assets/css/style.css" />
 		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+		<link
+			href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
 		<!-- header -->
@@ -138,34 +142,21 @@
 						<div class="card-body">
 							<div class="row gy-4">
 								<div class="col-12">
-									<select
-										class="form-select"
-										aria-label="Default select example"
-										id="categorySelect"
-									>
-										<!-- <option selected>Pilihan Toko</option>
-										<option value="1">One</option>
-										<option value="2">Two</option>
-										<option value="3">Three</option> -->
+									<select class="categoryClass form-control" id="categorySelect">
+									</select>
 									</select>
 								</div>
 								<div class="col-12">
-									<select
-										class="form-select"
-										aria-label="Default select example"
-										id="shopSelect"
-									>
+									<select class="shopClass form-control" id="shopSelect">
 									</select>
 								</div>
 								<div class="col-12">
 									<label for="minPrice">Min Price:</label>
-									<select id="minPrice" class="form-control">
-									</select>
+									<select id="minPrice" class="form-control"></select>
 								</div>
 								<div class="col-12">
 									<label for="maxPrice">Max Price:</label>
-									<select id="maxPrice" class="form-control">
-									</select>
+									<select id="maxPrice" class="form-control"></select>
 								</div>
 								<div class="col-12">
 									<div class="d-grid">
@@ -184,18 +175,37 @@
 					</div>
 					<div class="card mt-2">
 						<div class="card-body">
-							<div class="row g-2" id="productsList">
-							</div>
-							<button class="btn btn-dark text-center mt-4" id="loadMore">Tampilkan Semua</button>
+							<div class="row g-2" id="productsList"></div>
+							<button class="btn btn-dark text-center mt-4" id="loadMore">
+								Tampilkan Semua
+							</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+			integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+			integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+			crossorigin="anonymous"
+		></script>
 		<script type="module" src="assets/js/query/script.js"></script>
 		<script type="module" src="assets/js/query/helper.js"></script>
 		<script type="module" src="assets/js/helper/listPriceSelect.js"></script>
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+		<script>
+			$(document).ready(function() {
+					$('.categoryClass').select2();
+			});
+			$(document).ready(function() {
+					$('.shopClass').select2();
+			});
+		</script>
 	</body>
 </html>
