@@ -4,11 +4,14 @@ import { getAllCarousel } from './carousel.js'
 import { getCardProduct } from '../helper/cardProduct.js';
 import { getCategoryProd } from '../helper/cardCategory.js';
 import { listShopName } from '../helper/listShopName.js';
+
+
 const count = document.getElementById('count');
 const categorySelect = document.getElementById('categorySelect')
 const shopSelect = document.getElementById('shopSelect');
 const productsList = document.getElementById('productsList');
 
+const searchProduct = document.getElementById('searchProduct');
 
 // sinkron with minim query
 async function fetchData() {
@@ -23,10 +26,12 @@ async function getProducts() {
   const productsToShow = 12; // Jumlah produk yang ingin ditampilkan setiap kali
 
   // Fungsi untuk menampilkan produk pada halaman
-  const displayProducts = (startIndex, endIndex) => {
+  const displayProducts = (startIndex, endIndex, searchTerm) => {
+    productsList.innerHTML = '';
+
     for (let i = startIndex; i < endIndex; i++) {
       const product = products[i];
-      if (product) {
+      if (product && product.nameProduct.toLowerCase().includes(searchTerm.toLowerCase())) {
         const cardProduct = getCardProduct(
           product.id, product.img.url, product.nameProduct.slice(0, 10),
           product.category, product.price, product.shop.name
@@ -36,6 +41,24 @@ async function getProducts() {
       }
     }
   };
+
+  const getSearchQuery = (nameProduct) => {
+    const urlSearch = new URLSearchParams(window.location.search)
+    urlSearch.get(nameProduct) ?? null
+  }
+
+  const searchQueryParams = getSearchQuery('nameProduct');
+  if (searchQueryParams) searchProduct.value = searchQueryParams || null;
+
+  // kondisi pencarian (search)
+  searchProduct.addEventListener('input', () => {
+    const searchTerm = searchProduct.value.trim();
+    displayProducts(0, productsToShow, searchTerm);
+
+    // update query
+    window.history.replaceState({}, '', `?nameProduct=${encodeURIComponent(searchTerm).replace(/%20/g, '+')}`);
+
+  })
 
   // Hitung jumlah halaman yang diperlukan
   const totalPages = Math.ceil(totalProducts / productsToShow);
@@ -48,7 +71,7 @@ async function getProducts() {
     const startIndex = (nextPage - 1) * productsToShow;
     const endIndex = nextPage * productsToShow;
 
-    displayProducts(startIndex, endIndex);
+    displayProducts(0, productsToShow, searchQueryParams || '');
 
     // Simpan nomor halaman saat ini untuk pemanggilan berikutnya
     loadMoreHandler.currentPage = nextPage;
@@ -73,7 +96,7 @@ async function getProducts() {
 
 
   // Menampilkan produk pertama kali
-  displayProducts(0, productsToShow);
+  displayProducts(0, productsToShow, searchQueryParams || '');
 
   // Tampilkan tombol "Load More" hanya jika ada lebih dari 12 produk
   if (totalProducts > productsToShow) {
