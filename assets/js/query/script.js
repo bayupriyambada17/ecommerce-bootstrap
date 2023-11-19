@@ -25,7 +25,7 @@ async function fetchData() {
 async function getProducts() {
   const { products } = await fetchData();
   const totalProducts = products.length;
-  const productsToShow = 12; // Jumlah produk yang ingin ditampilkan setiap kali
+  const productsToShow = 24; // Jumlah produk yang ingin ditampilkan setiap kali
 
   // Fungsi untuk menampilkan produk pada halaman
   const displayProducts = (startIndex, endIndex, searchTerm) => {

@@ -24,7 +24,7 @@ export const getCardProduct = (
           <li class="list-group-item">${shopName}</li>
         </ul>
         <div class="card-body">
-          <a href="#${id}" class="d-block btn btn-outline-dark"
+          <a href="#${id}" class="d-block btn btn-sm btn-outline-dark"
             >Lihat Detail</a
           >
         </div>
