@@ -1,16 +1,19 @@
 "use strict";
-import { urlApi } from "./helper.js";
+import { urlApi } from "../helper/env.js";
 import { getAllCarousel } from "./carousel.js";
 import { getCardProduct } from "../components/cardProduct.js";
 import { getCategoryProd } from "../components/cardCategory.js";
 import { listShopName } from "../components/listShopName.js";
-const count = document.getElementById("count");
-const categorySelect = document.getElementById("categorySelect");
-const shopSelect = document.getElementById("shopSelect");
-const productsList = document.getElementById("productsList");
+import { namesApp } from "../helper/env.js";
 
-const searchProduct = document.getElementById("searchProduct");
-const loadMoreBtn = document.getElementById("loadMore");
+import {
+  count,
+  categorySelect,
+  shopSelect,
+  productsList,
+  searchProduct,
+  loadMoreBtn
+} from "../shared/elementId.js";
 
 let displayProductCount = 0;
 // sinkron with minim query
@@ -56,7 +59,9 @@ async function getProducts() {
       const cardProduct = getCardProduct(
         product.id,
         product.img.url,
-        product.nameProduct.slice(0, 15),
+        product.nameProduct.length > 15
+          ? product.nameProduct.slice(0, 15) + "..."
+          : product.nameProduct,
         product.category,
         product.price,
         `${product.shop.name} - ${product.shop.rating}`
@@ -170,6 +175,7 @@ async function init() {
   await getCategory();
   await getShopName();
   await getAllCarousel();
+  namesApp
 }
 
 document.addEventListener("DOMContentLoaded", () => {

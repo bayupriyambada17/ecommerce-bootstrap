@@ -6,8 +6,8 @@ export const getCardProduct = (
   price,
   shopName) => {
   const productCard = `
-    <div class="col-sm-3 col-md-4 col-12">
-      <div class="card">
+    <div class="col-sm-3 col-md-3 col-12">
+      <div class="card product">
         <img
           src="${img}"
           class="card-img-top"
@@ -15,7 +15,7 @@ export const getCardProduct = (
           alt="${nameProduct}"
         />
         <div class="card-body">
-          <h5 class="card-title">${nameProduct}</h5>
+          <h6 class="card-title">${nameProduct}</h6>
          
         </div>
         <ul class="list-group list-group-flush">

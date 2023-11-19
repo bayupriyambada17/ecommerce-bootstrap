@@ -14,7 +14,7 @@ export const getAllCarousel = async () => {
 const getSlider = (i, image, alt) => {
   let carouselHtml = `
     <div class="carousel-item ${i}">
-      <img src="${image}" class="d-block w-100 rounded shadow" alt="${alt}" />
+      <img src="${image}" class="d-block w-100 rounded shadow-sm" alt="${alt}" />
     </div>`;
 
   carouselContainer.innerHTML += carouselHtml;

@@ -1,6 +1,3 @@
-export const urlApi = 'https://bootcamp-api.bayupriyambada.repl.co/api/v1/productsApi.json'
-
-
 export function formatRp(input) {
   if (input) {
     // Remove non-numeric characters
@@ -18,3 +15,6 @@ export function formatRp(input) {
 }
 
 formatRp();
+
+
+
