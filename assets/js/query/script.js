@@ -1,17 +1,16 @@
-"use strict"
-import { urlApi } from './helper.js'
-import { getAllCarousel } from './carousel.js'
-import { getCardProduct } from '../components/cardProduct.js';
-import { getCategoryProd } from '../components/cardCategory.js';
-import { listShopName } from '../components/listShopName.js';
-const count = document.getElementById('count');
-const categorySelect = document.getElementById('categorySelect')
-const shopSelect = document.getElementById('shopSelect');
-const productsList = document.getElementById('productsList');
+"use strict";
+import { urlApi } from "./helper.js";
+import { getAllCarousel } from "./carousel.js";
+import { getCardProduct } from "../components/cardProduct.js";
+import { getCategoryProd } from "../components/cardCategory.js";
+import { listShopName } from "../components/listShopName.js";
+const count = document.getElementById("count");
+const categorySelect = document.getElementById("categorySelect");
+const shopSelect = document.getElementById("shopSelect");
+const productsList = document.getElementById("productsList");
 
-const searchProduct = document.getElementById('searchProduct');
-const loadMoreBtn = document.getElementById('loadMore');
-
+const searchProduct = document.getElementById("searchProduct");
+const loadMoreBtn = document.getElementById("loadMore");
 
 let displayProductCount = 0;
 // sinkron with minim query
@@ -27,77 +26,96 @@ async function getProducts() {
 
   // Fungsi untuk menampilkan produk pada halaman
   const displayProducts = (startIndex, endIndex, searchTerm) => {
-    productsList.innerHTML = '';
+    productsList.innerHTML = "";
     displayProductCount = 0; // Reset the count
 
     for (let i = startIndex; i < endIndex; i++) {
       const product = products[i];
 
-      if (!product || typeof product !== 'object' || !product.nameProduct || !product.shop.name) {
+      if (
+        !product ||
+        typeof product !== "object" ||
+        !product.nameProduct ||
+        !product.shop.name
+      ) {
         continue;
       }
 
-      // check id 
+      // check id
       if (!product.id) {
-        console.error('Product id is missing:', product);
+        console.error("Product id is missing:", product);
         continue;
       }
 
-      if (searchTerm && !product.nameProduct.toLowerCase().includes(searchTerm.toLowerCase())) {
+      if (
+        searchTerm &&
+        !product.nameProduct.toLowerCase().includes(searchTerm.toLowerCase())
+      ) {
         continue;
       }
       const cardProduct = getCardProduct(
-        product.id, product.img.url, product.nameProduct.slice(0, 15),
-        product.category, product.price, product.shop.name
+        product.id,
+        product.img.url,
+        product.nameProduct.slice(0, 15),
+        product.category,
+        product.price,
+        `${product.shop.name} - ${product.shop.rating}`
       );
       productsList.innerHTML += cardProduct;
-      displayProductCount++
+      displayProductCount++;
     }
-
-    updateCount()
+    updateCount();
   };
 
   const getSearchQuery = (nameProduct) => {
-    const urlSearch = new URLSearchParams(window.location.search)
-    return urlSearch.get(nameProduct)
-  }
+    const urlSearch = new URLSearchParams(window.location.search);
+    const value = urlSearch.get(nameProduct);
 
-  const searchQueryParams = getSearchQuery('nameProduct');
-  if (searchQueryParams) searchProduct.value = searchQueryParams || null;
+    if (value !== null && value !== "") {
+      return value;
+    } else {
+      urlSearch.delete(nameProduct);
+      const newUrl = `${window.location.origin}${window.location.pathname
+        }?${urlSearch.toString()}`;
+      window.history.replaceState({}, "", newUrl);
+      return null;
+    }
+  };
+
+  const searchQueryParams = getSearchQuery("nameProduct");
+  if (searchQueryParams !== null) searchProduct.value = searchQueryParams;
 
   // kondisi pencarian (search)
-  searchProduct.addEventListener('input', () => {
+  searchProduct.addEventListener("input", () => {
     const searchTerm = searchProduct.value.trim();
     displayProducts(0, productsToShow, searchTerm);
 
     // update query
-    const searchName = `?nameProduct=${encodeURIComponent(searchTerm).replace(/%20/g, '+')}`
-    window.history.replaceState({}, '', searchName);
+    const searchName = `?nameProduct=${encodeURIComponent(searchTerm).replace(
+      /%20/g,
+      "+"
+    )}`;
+    window.history.replaceState({}, "", searchName);
 
     // Show the "Load More" button
-    loadMoreBtn.style.display = 'block';
+    loadMoreBtn.style.display = "block";
     updateCount();
-
-  })
+  });
 
   // Fungsi untuk menangani tombol "Load More"
   const loadMoreHandler = () => {
-
-    const productsToShow = 12;
-    const totalPages = Math.ceil(products.length / productsToShow);
-
     // Display all products without search filter
     displayProducts(0, products.length, null);
 
     // Hide the "Load More" button
-    loadMoreBtn.style.display = 'none';
+    loadMoreBtn.style.display = "none";
 
     // Update the count
     updateCount();
   };
 
   // Menambahkan event listener untuk tombol "Load More"
-  if (loadMoreBtn) loadMoreBtn.addEventListener('click', loadMoreHandler);
+  if (loadMoreBtn) loadMoreBtn.addEventListener("click", loadMoreHandler);
 
   // Fungsi untuk memperbarui count
   const updateCount = () => {
@@ -107,13 +125,13 @@ async function getProducts() {
   };
 
   // Menampilkan produk pertama kali
-  displayProducts(0, productsToShow, searchQueryParams || '');
+  displayProducts(0, productsToShow, searchQueryParams || "");
 
   // Tampilkan tombol "Load More" hanya jika ada lebih dari 12 produk
   if (totalProducts > productsToShow) {
-    loadMoreBtn.style.display = 'block';
+    loadMoreBtn.style.display = "block";
   }
-  updateCount()
+  updateCount();
 }
 
 async function getCategory() {
@@ -121,23 +139,29 @@ async function getCategory() {
 
   if (products) {
     // jika terjadi category sama maka jadikan 1 saja.
-    const uniqueCategories = [...new Set(products.map(prod => prod.category))];
-    uniqueCategories.unshift('Pilihan Kategori');
+    const uniqueCategories = [
+      ...new Set(products.map((prod) => prod.category)),
+    ];
+    uniqueCategories.unshift("Pilihan Kategori");
 
-    categorySelect.innerHTML = uniqueCategories.map((category) => {
-      return getCategoryProd(category)
-    }).join('') || null;
+    categorySelect.innerHTML =
+      uniqueCategories
+        .map((category) => {
+          return getCategoryProd(category);
+        })
+        .join("") || null;
   }
-
 }
 
 // Pilihan Toko
 async function getShopName() {
   const { products } = await fetchData();
   if (products) {
-    const uniqueShopName = [...new Set(products.map(s => s.shop.name))];
-    uniqueShopName.unshift('Pilihan Toko');
-    shopSelect.innerHTML = uniqueShopName.map((shop) => listShopName(shop)).join('');
+    const uniqueShopName = [...new Set(products.map((s) => s.shop.name))];
+    uniqueShopName.unshift("Pilihan Toko");
+    shopSelect.innerHTML = uniqueShopName
+      .map((shop) => listShopName(shop))
+      .join("");
   }
 }
 
@@ -148,6 +172,6 @@ async function init() {
   await getAllCarousel();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   init();
 });

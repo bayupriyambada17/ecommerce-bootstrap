@@ -19,7 +19,3 @@ const getSlider = (i, image, alt) => {
 
   carouselContainer.innerHTML += carouselHtml;
 }
-
-const getSlideNameFunc = () => {
-  // Todo
-}

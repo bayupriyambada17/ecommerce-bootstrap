@@ -25,7 +25,7 @@ export const getCardProduct = (
         </ul>
         <div class="card-body">
           <a href="#${id}" class="d-block btn btn-outline-dark"
-            >Tambah Keranjang</a
+            >Lihat Detail</a
           >
         </div>
       </div>
