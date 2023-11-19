@@ -1,18 +1,19 @@
 "use strict"
 import { urlApi } from './helper.js'
 import { getAllCarousel } from './carousel.js'
-import { getCardProduct } from '../helper/cardProduct.js';
-import { getCategoryProd } from '../helper/cardCategory.js';
-import { listShopName } from '../helper/listShopName.js';
-
-
+import { getCardProduct } from '../components/cardProduct.js';
+import { getCategoryProd } from '../components/cardCategory.js';
+import { listShopName } from '../components/listShopName.js';
 const count = document.getElementById('count');
 const categorySelect = document.getElementById('categorySelect')
 const shopSelect = document.getElementById('shopSelect');
 const productsList = document.getElementById('productsList');
 
 const searchProduct = document.getElementById('searchProduct');
+const loadMoreBtn = document.getElementById('loadMore');
 
+
+let displayProductCount = 0;
 // sinkron with minim query
 async function fetchData() {
   const response = await fetch(urlApi);
@@ -21,30 +22,44 @@ async function fetchData() {
 
 async function getProducts() {
   const { products } = await fetchData();
-  let displayProductCount = 0;
   const totalProducts = products.length;
   const productsToShow = 12; // Jumlah produk yang ingin ditampilkan setiap kali
 
   // Fungsi untuk menampilkan produk pada halaman
   const displayProducts = (startIndex, endIndex, searchTerm) => {
     productsList.innerHTML = '';
+    displayProductCount = 0; // Reset the count
 
     for (let i = startIndex; i < endIndex; i++) {
       const product = products[i];
-      if (product && product.nameProduct.toLowerCase().includes(searchTerm.toLowerCase())) {
-        const cardProduct = getCardProduct(
-          product.id, product.img.url, product.nameProduct.slice(0, 10),
-          product.category, product.price, product.shop.name
-        );
-        productsList.innerHTML += cardProduct;
-        displayProductCount++
+
+      if (!product || typeof product !== 'object' || !product.nameProduct || !product.shop.name) {
+        continue;
       }
+
+      // check id 
+      if (!product.id) {
+        console.error('Product id is missing:', product);
+        continue;
+      }
+
+      if (searchTerm && !product.nameProduct.toLowerCase().includes(searchTerm.toLowerCase())) {
+        continue;
+      }
+      const cardProduct = getCardProduct(
+        product.id, product.img.url, product.nameProduct.slice(0, 15),
+        product.category, product.price, product.shop.name
+      );
+      productsList.innerHTML += cardProduct;
+      displayProductCount++
     }
+
+    updateCount()
   };
 
   const getSearchQuery = (nameProduct) => {
     const urlSearch = new URLSearchParams(window.location.search)
-    urlSearch.get(nameProduct) ?? null
+    return urlSearch.get(nameProduct)
   }
 
   const searchQueryParams = getSearchQuery('nameProduct');
@@ -56,34 +71,31 @@ async function getProducts() {
     displayProducts(0, productsToShow, searchTerm);
 
     // update query
-    window.history.replaceState({}, '', `?nameProduct=${encodeURIComponent(searchTerm).replace(/%20/g, '+')}`);
+    const searchName = `?nameProduct=${encodeURIComponent(searchTerm).replace(/%20/g, '+')}`
+    window.history.replaceState({}, '', searchName);
+
+    // Show the "Load More" button
+    loadMoreBtn.style.display = 'block';
+    updateCount();
 
   })
 
-  // Hitung jumlah halaman yang diperlukan
-  const totalPages = Math.ceil(totalProducts / productsToShow);
-
   // Fungsi untuk menangani tombol "Load More"
   const loadMoreHandler = () => {
-    const currentPage = loadMoreHandler.currentPage || 1;
-    const nextPage = currentPage + 1;
 
-    const startIndex = (nextPage - 1) * productsToShow;
-    const endIndex = nextPage * productsToShow;
+    const productsToShow = 12;
+    const totalPages = Math.ceil(products.length / productsToShow);
 
-    displayProducts(0, productsToShow, searchQueryParams || '');
+    // Display all products without search filter
+    displayProducts(0, products.length, null);
 
-    // Simpan nomor halaman saat ini untuk pemanggilan berikutnya
-    loadMoreHandler.currentPage = nextPage;
+    // Hide the "Load More" button
+    loadMoreBtn.style.display = 'none';
 
-    // Sembunyikan tombol "Load More" jika semua produk telah ditampilkan
-    if (nextPage >= totalPages) {
-      loadMoreBtn.style.display = 'none';
-    }
-    updateCount()
+    // Update the count
+    updateCount();
   };
 
-  const loadMoreBtn = document.getElementById('loadMore');
   // Menambahkan event listener untuk tombol "Load More"
   if (loadMoreBtn) loadMoreBtn.addEventListener('click', loadMoreHandler);
 
@@ -94,7 +106,6 @@ async function getProducts() {
     }
   };
 
-
   // Menampilkan produk pertama kali
   displayProducts(0, productsToShow, searchQueryParams || '');
 
@@ -102,9 +113,7 @@ async function getProducts() {
   if (totalProducts > productsToShow) {
     loadMoreBtn.style.display = 'block';
   }
-
   updateCount()
-
 }
 
 async function getCategory() {
@@ -117,7 +126,6 @@ async function getCategory() {
 
     categorySelect.innerHTML = uniqueCategories.map((category) => {
       return getCategoryProd(category)
-
     }).join('') || null;
   }
 
@@ -138,7 +146,8 @@ async function init() {
   await getCategory();
   await getShopName();
   await getAllCarousel();
-  // await selectPrices();
 }
 
-init();
+document.addEventListener('DOMContentLoaded', () => {
+  init();
+});
